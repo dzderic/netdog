@@ -1,0 +1,24 @@
+#!/usr/bin/env python
+import argparse
+
+from actions import connect, listen
+
+parser = argparse.ArgumentParser()
+subparsers = parser.add_subparsers()
+
+listen_parser = subparsers.add_parser("listen", help="Receive packets and output them to stdout")
+listen_parser.add_argument('sources', nargs='+', help="URLs to receive data from")
+listen_parser.set_defaults(action='listen')
+
+ACTIONS = {
+    'listen': listen,
+    'connect': connect,
+}
+
+
+def main(args):
+    ACTIONS[args.action](args)
+
+if __name__ == '__main__':
+    args = parser.parse_args()
+    main(args)
